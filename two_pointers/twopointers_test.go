@@ -102,3 +102,36 @@ func TestRemoveNthLastNode(t *testing.T) {
 		assert.Equal(t, tc.want.Display(), ConstructLinkedListFromNode(got).Display())
 	}
 }
+
+func TestSortColors(t *testing.T) {
+	testCases := []struct {
+		input []int
+		want  []int
+	}{
+		{
+			input: []int{2, 0, 2, 1, 1, 0},
+			want:  []int{0, 0, 1, 1, 2, 2},
+		},
+		{
+			input: []int{2, 0, 1},
+			want:  []int{0, 1, 2},
+		},
+		{
+			input: []int{0},
+			want:  []int{0},
+		},
+		{
+			input: []int{1, 1, 1},
+			want:  []int{1, 1, 1},
+		},
+		{
+			input: nil,
+			want:  nil,
+		},
+	}
+
+	for _, tc := range testCases {
+		sortColors(tc.input)
+		assert.Equal(t, tc.want, tc.input)
+	}
+}
