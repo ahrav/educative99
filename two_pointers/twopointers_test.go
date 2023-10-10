@@ -185,3 +185,54 @@ func BenchmarkIsHappyTwoPointer(b *testing.B) {
 		isHappyTwoPointer(1912)
 	}
 }
+
+func TestCircularArrayLoop(t *testing.T) {
+	testCases := []struct {
+		input []int
+		want  bool
+	}{
+		{
+			input: []int{2, -1, 1, 2, 2},
+			want:  true,
+		},
+		{
+			input: []int{-1, 2},
+			want:  false,
+		},
+		{
+			input: []int{-2, 1, -1, -2, -2},
+			want:  false,
+		},
+		{
+			input: []int{-1, -2, -3, -4, -5},
+			want:  false,
+		},
+		{
+			input: []int{1, 1, 2},
+			want:  true,
+		},
+		{
+			input: []int{2, 2, 2, 2, 2, 4, 7},
+			want:  false,
+		},
+		{
+			input: []int{-1, -1, -1},
+			want:  true,
+		},
+		{
+			input: []int{-1, -1, -2},
+			want:  true,
+		},
+	}
+
+	for _, tc := range testCases {
+		got := circularArrayLoop(tc.input)
+		assert.Equal(t, tc.want, got)
+	}
+}
+
+func BenchmarkCircularArrayLoop(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_ = circularArrayLoop([]int{2, -1, 1, 2, 2})
+	}
+}
