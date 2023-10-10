@@ -135,3 +135,53 @@ func TestSortColors(t *testing.T) {
 		assert.Equal(t, tc.want, tc.input)
 	}
 }
+
+func TestIsHappy(t *testing.T) {
+	testCases := []struct {
+		input int
+		want  bool
+	}{
+		{input: 19, want: true},
+		{input: 2, want: false},
+		{input: 4, want: false},
+		{input: 0, want: false},
+		{input: 28, want: true},
+		{input: 1, want: true},
+	}
+
+	for _, tc := range testCases {
+		got := isHappy(tc.input)
+		assert.Equal(t, tc.want, got)
+	}
+}
+
+func BenchmarkIsHappy(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		isHappy(1912)
+	}
+}
+
+func TestIsHappyTwoPointer(t *testing.T) {
+	testCases := []struct {
+		input int
+		want  bool
+	}{
+		{input: 19, want: true},
+		{input: 2, want: false},
+		{input: 4, want: false},
+		{input: 0, want: false},
+		{input: 28, want: true},
+		{input: 1, want: true},
+	}
+
+	for _, tc := range testCases {
+		got := isHappyTwoPointer(tc.input)
+		assert.Equal(t, tc.want, got)
+	}
+}
+
+func BenchmarkIsHappyTwoPointer(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		isHappyTwoPointer(1912)
+	}
+}

@@ -139,3 +139,46 @@ func sortColors(colors []int) []int {
 
 	return colors
 }
+
+func isHappy(n int) bool {
+	if n == 0 {
+		return false
+	}
+
+	seen := make(map[int]struct{})
+	for n != 1 {
+		if _, ok := seen[n]; ok {
+			return false
+		}
+
+		seen[n] = struct{}{}
+		n = sumOfSquares(n)
+	}
+
+	return true
+}
+
+func isHappyTwoPointer(n int) bool {
+	if n == 0 {
+		return false
+	}
+
+	slow, fast := n, sumOfSquares(n)
+	for slow != fast {
+		slow = sumOfSquares(slow)
+		fast = sumOfSquares(sumOfSquares(fast))
+	}
+
+	return slow == 1
+}
+
+func sumOfSquares(n int) int {
+	sum := 0
+	for n > 0 {
+		digit := n % 10
+		sum += digit * digit
+		n /= 10
+	}
+
+	return sum
+}
