@@ -140,6 +140,8 @@ func sortColors(colors []int) []int {
 	return colors
 }
 
+// This approach is slower than the two pointer approach.
+// It also uses more memory.
 func isHappy(n int) bool {
 	if n == 0 {
 		return false
@@ -181,4 +183,22 @@ func sumOfSquares(n int) int {
 	}
 
 	return sum
+}
+
+func containsCycle(head *ListNode) bool {
+	if head == nil {
+		return false
+	}
+
+	slow, fast := head, head
+	for fast != nil && fast.Next != nil {
+		fast = fast.Next.Next
+		slow = slow.Next
+
+		if slow == fast {
+			return true
+		}
+	}
+
+	return false
 }
