@@ -236,3 +236,42 @@ func BenchmarkCircularArrayLoop(b *testing.B) {
 		_ = circularArrayLoop([]int{2, -1, 1, 2, 2})
 	}
 }
+
+func TestBinarySearch(t *testing.T) {
+	testCases := []struct {
+		input  []int
+		target int
+		want   int
+	}{
+		{
+			input:  []int{1, 2, 3, 4, 5},
+			target: 3,
+			want:   2,
+		},
+		{
+			input:  []int{1, 2, 3, 4, 5},
+			target: 2,
+			want:   1,
+		},
+		{
+			input:  []int{1, 2, 3, 4, 5},
+			target: 4,
+			want:   3,
+		},
+		{
+			input:  []int{1, 2, 3, 4, 5},
+			target: 12,
+			want:   -1,
+		},
+		{
+			input:  []int{1, 2, 3, 4, 5},
+			target: 0,
+			want:   -1,
+		},
+	}
+
+	for _, tc := range testCases {
+		got := binarySearch(tc.input, tc.target)
+		assert.Equal(t, tc.want, got)
+	}
+}
