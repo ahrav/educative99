@@ -300,3 +300,28 @@ func binarySearch(nums []int, target int) int {
 
 	return -1
 }
+
+func isBadVersion(n int) bool {
+	return n >= 4
+}
+
+func firstBadVersion(n int) (int, int) {
+	if n == 1 {
+		return 1, 1
+	}
+
+	count := 0
+	left, right := 1, n
+	for left < right {
+		middle := (left + right) / 2
+		count++
+		if isBadVersion(middle) {
+			right = middle
+		} else {
+			left = middle + 1
+		}
+
+	}
+
+	return left, count
+}
