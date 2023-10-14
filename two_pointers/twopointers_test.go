@@ -275,3 +275,42 @@ func TestBinarySearch(t *testing.T) {
 		assert.Equal(t, tc.want, got)
 	}
 }
+
+func TestBinarySearchRotated(t *testing.T) {
+	testCases := []struct {
+		input  []int
+		target int
+		want   int
+	}{
+		{
+			input:  []int{4, 5, 6, 7, 1, 2},
+			target: 1,
+			want:   4,
+		},
+		{
+			input:  []int{4, 5, 6, 7, 1, 2},
+			target: 3,
+			want:   -1,
+		},
+		{
+			input:  []int{1},
+			target: 0,
+			want:   -1,
+		},
+		{
+			input:  []int{1},
+			target: 1,
+			want:   0,
+		},
+		{
+			input:  []int{},
+			target: 1,
+			want:   -1,
+		},
+	}
+
+	for _, tc := range testCases {
+		got := binarySearchRotated(tc.input, tc.target)
+		assert.Equal(t, tc.want, got)
+	}
+}
