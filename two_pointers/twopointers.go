@@ -306,6 +306,7 @@ func isBadVersion(n int) bool {
 }
 
 // No test for this one :(
+// Weird edudative test.
 func firstBadVersion(n int) (int, int) {
 	if n == 1 {
 		return 1, 1
