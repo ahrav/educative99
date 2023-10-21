@@ -1,6 +1,9 @@
 package data_structures
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 type EduLinkedListNode struct {
 	data int
@@ -74,4 +77,184 @@ func reverse(head *EduLinkedListNode) *EduLinkedListNode {
 	}
 
 	return prev
+}
+
+func reverseEvenLengthGroups(head *EduLinkedListNode) {
+	// Write your code here
+}
+
+func reorderList(head *EduLinkedListNode) {
+	if head == nil || head.next == nil {
+		return
+	}
+	one, two := split(head)
+	two = reverse(two)
+	mergeAlternating(one, two)
+}
+
+// merge two linked lists in alternating order starting with the first list.
+// The lists will either be the same size or have one extra node in the second list.
+// If the second list has an extra node, it should be merged to the end of the merged list.
+func mergeAlternating(head1 *EduLinkedListNode, head2 *EduLinkedListNode) *EduLinkedListNode {
+	if head1 == nil {
+		return head2
+	}
+	if head2 == nil {
+		return head1
+	}
+
+	one, two := head1, head2
+	var temp *EduLinkedListNode
+	for one != nil && two != nil {
+		temp = one.next
+		one.next = two
+		one = temp
+
+		temp = two.next
+		two.next = one
+		two = temp
+	}
+	// if one list is longer than the other we simply append.
+	// Handle any extra nodes
+	tail := one
+	if two != nil {
+		tail = two
+	}
+
+	// Find the last node in the merged list
+	temp = head1
+	for temp.next != nil {
+		temp = temp.next
+	}
+
+	// If there's an extra node, append it
+	if tail != nil {
+		temp.next = tail
+	}
+	return head1
+}
+
+// split a list into two lists. Keep the first half in the original list
+// the extra element should be in the second list.
+func split(head *EduLinkedListNode) (*EduLinkedListNode, *EduLinkedListNode) {
+	if head == nil {
+		return nil, nil
+	}
+
+	slow, fast := head, head
+	var prev *EduLinkedListNode
+	for fast != nil && fast.next != nil {
+		prev = slow
+		slow = slow.next
+		fast = fast.next.next
+	}
+
+	prev.next = nil
+	return head, slow
+}
+
+func getMiddleNode(head *EduLinkedListNode) *EduLinkedListNode {
+	if head == nil {
+		return nil
+	}
+
+	slow, fast := head, head
+	for fast != nil && fast.next != nil {
+		fast = fast.next.next
+		slow = slow.next
+	}
+	slow.next = nil
+
+	return slow
+}
+
+func rotateLeft(d int32, arr []int32) []int32 {
+	if len(arr) == 0 || int32(len(arr)) == d {
+		return arr
+	}
+
+	d = d % int32(len(arr))
+	res := make([]int32, 0, len(arr))
+	res = append(res, arr[d:]...)
+	res = append(res, arr[:d]...)
+
+	return res
+}
+
+func rotateLeftInPlace(d int32, arr []int32) []int32 {
+	if len(arr) == 0 || int32(len(arr)) == d {
+		return arr
+	}
+
+	d = d % int32(len(arr))
+	reverseArrayInPlace(arr[:d])
+	reverseArrayInPlace(arr[d:])
+	reverseArrayInPlace(arr)
+
+	return arr
+}
+
+func reverseArrayInPlace(arr []int32) []int32 {
+	if len(arr) == 0 {
+		return arr
+	}
+
+	for i := 0; i < len(arr)/2; i++ {
+		arr[i], arr[len(arr)-1-i] = arr[len(arr)-1-i], arr[i]
+	}
+
+	return arr
+}
+
+func powerSum(x int32, n int32) int32 {
+	return powerSumHelper(x, n, 1)
+}
+
+func powerSumHelper(x int32, n int32, num int32) int32 {
+	p := int32(math.Pow(float64(num), float64(n)))
+	if p > x {
+		return 0
+	} else if p == x {
+		return 1
+	} else {
+		return powerSumHelper(x, n, num+1) + powerSumHelper(x-p, n, num+1)
+	}
+}
+
+var memo = make(map[string]int32)
+
+func powerSumHelperMemo(x, n, num int32) int32 {
+	key := fmt.Sprintf("%d:%d:%d", x, n, num)
+	if val, exists := memo[key]; exists {
+		return val
+	}
+
+	p := int32(math.Pow(float64(num), float64(n)))
+
+	if p > x {
+		return 0
+	} else if p == x {
+		return 1
+	} else {
+		memo[key] = powerSumHelper(x, n, num+1) + powerSumHelper(x-p, n, num+1)
+		return memo[key]
+	}
+}
+
+func powerSumDP(x, n int32) int32 {
+	// Initialize DP array with size x+1. dp[i] will store the number of ways to make the sum i.
+	dp := make([]int32, x+1)
+	dp[0] = 1 // Base case: one way to make the sum 0: use no numbers at all.
+
+	// Loop through each 'num' to see if it should be included in the sum
+	for num := int32(1); int32(math.Pow(float64(num), float64(n))) <= x; num++ {
+		p := int32(math.Pow(float64(num), float64(n)))
+
+		// Update dp array: try including 'num'
+		for i := x; i >= p; i-- {
+			dp[i] += dp[i-p]
+		}
+	}
+
+	return dp[x] // This contains the number of ways to make the sum x
 }
