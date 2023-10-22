@@ -259,6 +259,7 @@ func powerSumDP(x, n int32) int32 {
 	return dp[x] // This contains the number of ways to make the sum x.
 }
 
+// canConstruct returns true if searchWord can be constructed from the letters in corpus.
 func canConstruct(searchWord, corpus string) bool {
 	if len(searchWord) == 0 {
 		return true
