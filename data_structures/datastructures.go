@@ -258,3 +258,41 @@ func powerSumDP(x, n int32) int32 {
 
 	return dp[x] // This contains the number of ways to make the sum x.
 }
+
+func canConstruct(searchWord, corpus string) bool {
+	if len(searchWord) == 0 {
+		return true
+	}
+
+	if len(corpus) == 0 {
+		return false
+	}
+
+	if len(searchWord) > len(corpus) {
+		return false
+	}
+
+	charCount := make(map[rune]int)
+	remainingChars := len(searchWord)
+
+	for _, c := range searchWord {
+		charCount[c]++
+	}
+
+	for _, c := range corpus {
+		if count, exists := charCount[c]; exists && count > 0 {
+			charCount[c]--
+			remainingChars--
+
+			if charCount[c] == 0 {
+				delete(charCount, c)
+			}
+
+			if remainingChars == 0 {
+				return true
+			}
+		}
+	}
+
+	return false
+}
