@@ -236,7 +236,7 @@ func powerSumHelperMemo(x, n, num int32) int32 {
 	} else if p == x {
 		return 1
 	} else {
-		memo[key] = powerSumHelper(x, n, num+1) + powerSumHelper(x-p, n, num+1)
+		memo[key] = powerSumHelperMemo(x, n, num+1) + powerSumHelperMemo(x-p, n, num+1)
 		return memo[key]
 	}
 }
@@ -246,7 +246,7 @@ func powerSumDP(x, n int32) int32 {
 	dp := make([]int32, x+1)
 	dp[0] = 1 // Base case: one way to make the sum 0: use no numbers at all.
 
-	// Loop through each 'num' to see if it should be included in the sum
+	// Loop through each 'num' to see if it should be included in the sum.
 	for num := int32(1); int32(math.Pow(float64(num), float64(n))) <= x; num++ {
 		p := int32(math.Pow(float64(num), float64(n)))
 
@@ -256,5 +256,5 @@ func powerSumDP(x, n int32) int32 {
 		}
 	}
 
-	return dp[x] // This contains the number of ways to make the sum x
+	return dp[x] // This contains the number of ways to make the sum x.
 }
