@@ -297,3 +297,33 @@ func canConstruct(searchWord, corpus string) bool {
 
 	return false
 }
+
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+type ListNode struct {
+	Val  int
+	Next *ListNode
+}
+
+// ConvertBSTToLinkedList traverses the tree in-order and appends nodes to the list.
+func ConvertBSTToLinkedList(root *TreeNode) *ListNode {
+	dummy := &ListNode{}
+	prev := dummy
+	inorder(root, &prev)
+	return dummy.Next
+}
+
+// inorder recursively performs an in-order traversal.
+func inorder(root *TreeNode, prev **ListNode) {
+	if root == nil {
+		return
+	}
+	inorder(root.Left, prev)
+	(*prev).Next = &ListNode{Val: root.Val}
+	*prev = (*prev).Next
+	inorder(root.Right, prev)
+}
