@@ -182,3 +182,90 @@ func (g *Graph) hasCycle(v *Vertex, visited map[*Vertex]struct{}, parent *Vertex
 	}
 	return false
 }
+
+// DFSTopologicalSort performs a topological sort on a graph using DFS.
+func (g *Graph) DFSTopologicalSort() ([]*Vertex, error) {
+	// Track visited vertices.
+	visited := make(map[*Vertex]struct{})
+	// Track sorted vertices.
+	var sorted []*Vertex
+
+	for _, v := range g.vertices {
+		if _, ok := visited[v]; !ok {
+			if err := g.topologicalSort(v, visited, &sorted, nil); err != nil {
+				return nil, err
+			}
+		}
+	}
+
+	return sorted, nil
+}
+
+// topologicalSort is a helper function for TopologicalSort.
+func (g *Graph) topologicalSort(v *Vertex, visited map[*Vertex]struct{}, sorted *[]*Vertex, parent *Vertex) error {
+	// Mark v as visited.
+	visited[v] = struct{}{}
+
+	// Visit v's neighbors.
+	for _, a := range v.adjacent {
+		if _, ok := visited[a]; !ok {
+			if err := g.topologicalSort(a, visited, sorted, v); err != nil {
+				return err
+			}
+		} else if a != parent {
+			return fmt.Errorf("graph is not a DAG")
+		}
+	}
+
+	// Prepend v to sorted.
+	*sorted = append([]*Vertex{v}, *sorted...)
+
+	return nil
+}
+
+// KahnTopologicalSort performs a topological sort on a graph using Kahn's algorithm.
+func (g *Graph) KahnTopologicalSort() ([]*Vertex, error) {
+	// Track in-degrees of vertices.
+	inDegrees := make(map[*Vertex]int)
+	for _, v := range g.vertices {
+		inDegrees[v] = 0
+		for _, a := range v.adjacent {
+			inDegrees[a]++
+		}
+	}
+
+	// Initialize queue with vertices with in-degree 0.
+	var queue []*Vertex
+	for v, inDegree := range inDegrees {
+		if inDegree == 0 {
+			queue = append(queue, v)
+		}
+	}
+
+	// Track sorted vertices.
+	var sorted []*Vertex
+
+	for len(queue) > 0 {
+		// Pop vertex from queue and append to sorted.
+		curr, queue := queue[0], queue[1:]
+		sorted = append(sorted, curr)
+
+		// Decrement in-degrees of curr's neighbors.
+		// Essentially removing edges from curr to its neighbors.
+		for _, a := range curr.adjacent {
+			inDegrees[a]--
+			if inDegrees[a] == 0 {
+				queue = append(queue, a)
+			}
+		}
+	}
+
+	// If there are any vertices left in the graph, then there is a cycle.
+	for _, v := range g.vertices {
+		if inDegrees[v] != 0 {
+			return nil, fmt.Errorf("graph is not a DAG")
+		}
+	}
+
+	return sorted, nil
+}
