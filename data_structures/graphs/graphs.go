@@ -1,6 +1,10 @@
 package graphs
 
-import "fmt"
+import (
+	"container/heap"
+	"fmt"
+	"math"
+)
 
 // Vertex represents a graph vertex.
 type Vertex struct {
@@ -268,4 +272,144 @@ func (g *Graph) KahnTopologicalSort() ([]*Vertex, error) {
 	}
 
 	return sorted, nil
+}
+
+type UnionFind struct {
+	parent []int
+	size   []int
+}
+
+func NewUnionFind(size int) *UnionFind {
+	// Each vertex is its own parent and the representative of its own set.
+	parent := make([]int, size)
+	for i := range parent {
+		parent[i] = i
+	}
+
+	// Each set has size 1 initially since each vertex is its own set.
+	sizeArr := make([]int, size)
+	for i := range sizeArr {
+		sizeArr[i] = 1
+	}
+
+	return &UnionFind{parent: parent, size: sizeArr}
+}
+
+func (uf *UnionFind) Find(rep int) int {
+	// If rep is not the representative of its set, then recursively find the representative of its set.
+	if uf.parent[rep] != rep {
+		// Path compression.
+		uf.parent[rep] = uf.Find(uf.parent[rep])
+	}
+	return uf.parent[rep]
+}
+
+func (uf *UnionFind) Union(rep1, rep2 int) {
+	// Find the representatives of the sets that rep1 and rep2 belong to.
+	rep1 = uf.Find(rep1)
+	rep2 = uf.Find(rep2)
+
+	// If rep1 and rep2 are already in the same set, then do nothing.
+	if rep1 == rep2 {
+		return
+	}
+
+	// Merge the smaller set into the larger set.
+	if uf.size[rep1] < uf.size[rep2] {
+		uf.parent[rep1] = rep2
+		uf.size[rep2] += uf.size[rep1]
+	} else {
+		uf.parent[rep2] = rep1
+		uf.size[rep1] += uf.size[rep2]
+	}
+}
+
+func (uf *UnionFind) Connected(rep1, rep2 int) bool {
+	return uf.Find(rep1) == uf.Find(rep2)
+}
+
+// Edge represents an edge in a graph.
+type Edge struct {
+	src, dst, weight int
+}
+
+// WeightedGraph represents an adjacency list weighted graph.
+type WeightedGraph struct {
+	numVertices int
+	edges       []Edge
+}
+
+// AddEdge adds an edge to a weighted graph.
+func (g *WeightedGraph) AddEdge(src, dst, weight int) {
+	g.edges = append(g.edges, Edge{src, dst, weight})
+	g.edges = append(g.edges, Edge{dst, src, weight})
+}
+
+// NewWeightedGraph constructs a new weighted graph.
+func NewWeightedGraph(numVertices int) *WeightedGraph {
+	return &WeightedGraph{numVertices: numVertices}
+}
+
+type MinHeap []Edge
+
+func (h MinHeap) Len() int           { return len(h) }
+func (h MinHeap) Less(i, j int) bool { return h[i].weight < h[j].weight }
+func (h MinHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
+
+func (h *MinHeap) Push(x any) {
+	*h = append(*h, x.(Edge))
+}
+
+func (h *MinHeap) Pop() any {
+	old := *h
+	n := len(old)
+	x := old[n-1]
+	*h = old[0 : n-1]
+	return x
+}
+
+// MST returns the minimum spanning tree of a weighted graph.
+type MST []Edge
+
+// PrimMST returns the minimum spanning tree of a weighted graph using Prim's algorithm.
+func (g *WeightedGraph) PrimMST() MST {
+	if g.numVertices == 0 {
+		return MST{}
+	}
+
+	// Initialize all keys as infinite and mstSet as false for all vertices
+	keys := make([]int, g.numVertices)
+	mstSet := make([]bool, g.numVertices)
+	for i := range keys {
+		keys[i] = math.MaxInt32
+	}
+	keys[0] = 0 // Start from the first vertex
+
+	pq := new(MinHeap)
+	heap.Init(pq)
+	heap.Push(pq, Edge{weight: 0, src: -1, dst: 0})
+
+	mst := MST{}
+
+	for pq.Len() > 0 {
+		// Pick the smallest edge in the min heap
+		u := heap.Pop(pq).(Edge).dst
+		if mstSet[u] {
+			continue
+		}
+		mstSet[u] = true // Include vertex in MST
+		if u != 0 {      // If not the first vertex, add to the MST result
+			mst = append(mst, Edge{src: u, dst: u, weight: keys[u]})
+		}
+
+		// Update the key values and parent index of the adjacent vertices
+		for _, e := range g.edges {
+			if !mstSet[e.dst] && e.weight < keys[e.dst] {
+				keys[e.dst] = e.weight
+				heap.Push(pq, Edge{weight: keys[e.dst], src: u, dst: e.dst})
+			}
+		}
+	}
+
+	return mst
 }
