@@ -4,6 +4,7 @@ import (
 	"container/heap"
 	"fmt"
 	"math"
+	"sort"
 )
 
 // Vertex represents a graph vertex.
@@ -408,6 +409,31 @@ func (g *WeightedGraph) PrimMST() MST {
 				keys[e.dst] = e.weight
 				heap.Push(pq, Edge{weight: keys[e.dst], src: u, dst: e.dst})
 			}
+		}
+	}
+
+	return mst
+}
+
+// KruskalMST returns the minimum spanning tree of a weighted graph using Kruskal's algorithm.
+func (g *WeightedGraph) KruskalMST() MST {
+	if g.numVertices == 0 {
+		return MST{}
+	}
+
+	// Sort edges by weight.
+	edges := g.edges
+	sort.Slice(edges, func(i, j int) bool {
+		return edges[i].weight < edges[j].weight
+	})
+
+	uf := NewUnionFind(g.numVertices)
+	mst := MST{}
+
+	for _, e := range edges {
+		if !uf.Connected(e.src, e.dst) {
+			uf.Union(e.src, e.dst)
+			mst = append(mst, e)
 		}
 	}
 
