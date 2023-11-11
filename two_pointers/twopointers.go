@@ -1,5 +1,10 @@
 package two_pointers
 
+import (
+	"strconv"
+	"strings"
+)
+
 func isPalindrome(s string) bool {
 	if s == "" {
 		return false
@@ -356,4 +361,41 @@ func binarySearchRotated(nums []int, target int) int {
 	}
 
 	return -1
+}
+
+func addBinary(str1, str2 string) string {
+	if str1 == "" {
+		return str2
+	}
+
+	if str2 == "" {
+		return str1
+	}
+
+	carry := 0
+	var result strings.Builder
+	for i, j := len(str1)-1, len(str2)-1; i >= 0 || j >= 0 || carry > 0; i, j = i-1, j-1 {
+		sum := carry
+		if i >= 0 {
+			sum += int(str1[i] - '0')
+		}
+
+		if j >= 0 {
+			sum += int(str2[j] - '0')
+		}
+
+		result.WriteString(strconv.Itoa(sum % 2))
+		carry = sum / 2
+	}
+
+	return reverse(result.String())
+}
+
+func reverse(str string) string {
+	var result strings.Builder
+	for i := len(str) - 1; i >= 0; i-- {
+		result.WriteByte(str[i])
+	}
+
+	return result.String()
 }
