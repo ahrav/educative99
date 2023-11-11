@@ -439,3 +439,48 @@ func (g *WeightedGraph) KruskalMST() MST {
 
 	return mst
 }
+
+// Dijkstra returns the shortest path from a source vertex to all other vertices in a weighted graph.
+func (g *WeightedGraph) Dijkstra(src int) []int {
+	if g.numVertices == 0 {
+		return []int{}
+	}
+
+	// Initialize all distances as infinite and sptSet as false for all vertices
+	dist := make([]int, g.numVertices)
+	sptSet := make([]bool, g.numVertices)
+	for i := range dist {
+		dist[i] = math.MaxInt32
+	}
+	dist[src] = 0 // Distance from source to source is 0
+
+	for i := 0; i < g.numVertices-1; i++ {
+		// Pick the smallest distance vertex from the set of vertices not yet processed.
+		u := minDistance(dist, sptSet)
+		sptSet[u] = true // Include vertex in shortest path tree
+
+		// Update the distance value of the adjacent vertices of the picked vertex.
+		for _, e := range g.edges {
+			if !sptSet[e.dst] && dist[u] != math.MaxInt32 && dist[u]+e.weight < dist[e.dst] {
+				dist[e.dst] = dist[u] + e.weight
+			}
+		}
+	}
+
+	return dist
+}
+
+// minDistance returns the vertex with the minimum distance from the set of vertices not yet processed.
+func minDistance(dist []int, sptSet []bool) int {
+	minV := math.MaxInt32
+	minIndex := -1
+
+	for i, d := range dist {
+		if !sptSet[i] && d <= minV {
+			minV = d
+			minIndex = i
+		}
+	}
+
+	return minIndex
+}
