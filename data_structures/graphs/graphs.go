@@ -484,3 +484,135 @@ func minDistance(dist []int, sptSet []bool) int {
 
 	return minIndex
 }
+
+type Node struct {
+	x, y   int
+	cost   float64
+	parent *Node
+	index  int // for heap.Interface
+}
+
+type PriorityQueue []*Node
+
+func (pq PriorityQueue) Len() int { return len(pq) }
+
+func (pq PriorityQueue) Less(i, j int) bool {
+	return pq[i].cost < pq[j].cost
+}
+
+func (pq PriorityQueue) Swap(i, j int) {
+	pq[i], pq[j] = pq[j], pq[i]
+	pq[i].index = i
+	pq[j].index = j
+}
+
+func (pq *PriorityQueue) Push(x interface{}) {
+	n := len(*pq)
+	node := x.(*Node)
+	node.index = n
+	*pq = append(*pq, node)
+}
+
+func (pq *PriorityQueue) Pop() interface{} {
+	old := *pq
+	n := len(old)
+	node := old[n-1]
+	old[n-1] = nil
+	node.index = -1
+	*pq = old[0 : n-1]
+	return node
+}
+
+// AStar returns the shortest path from a source node to a target node in a grid.
+func AStar(grid [][]*Node, src, target *Node) []*Node {
+	if src == nil || target == nil {
+		return nil
+	}
+
+	// Initialize the open and closed lists.
+	open := new(PriorityQueue)
+	heap.Init(open)
+	heap.Push(open, src)
+
+	cameFrom := make(map[*Node]*Node)
+	gScore := make(map[*Node]float64)
+	gScore[src] = 0
+
+	fScore := make(map[*Node]float64)
+	fScore[src] = heuristic(src, target)
+
+	// Add the source node to the open list.
+	src.cost = 0
+
+	for open.Len() > 0 {
+		// Pop the node with the lowest cost from the open list.
+		curr := heap.Pop(open).(*Node)
+
+		// If the popped node is the target node, then we're done.
+		if curr == target {
+			return reconstructPath(cameFrom, curr)
+		}
+
+		// Get the popped node's neighbors.
+		for _, neighbor := range getNeighbors(grid, curr) {
+			tmpGScore := gScore[curr] + 1 // assuming all edges have weight 1
+			if tmpGScore < gScore[neighbor] {
+				// This path to neighbor is better than any previous one.
+				cameFrom[neighbor] = curr
+				gScore[neighbor] = tmpGScore
+				fScore[neighbor] = gScore[neighbor] + heuristic(neighbor, target)
+				neighbor.cost = fScore[neighbor]
+				if !inHeap(*open, neighbor) {
+					heap.Push(open, neighbor)
+				}
+			}
+		}
+	}
+
+	return nil
+}
+
+func heuristic(a, b *Node) float64 {
+	// Manhattan distance on a grid.
+	return math.Abs(float64(a.x-b.x)) + math.Abs(float64(a.y-b.y))
+}
+
+func reconstructPath(cameFrom map[*Node]*Node, current *Node) []*Node {
+	path := []*Node{current}
+	for current != nil {
+		path = append(path, current)
+		current = cameFrom[current]
+		if current != nil {
+			// Prepend current to path.
+			path = append([]*Node{current}, path...)
+		}
+	}
+
+	return path
+}
+
+var dirs = [][]int{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}
+
+func getNeighbors(grid [][]*Node, node *Node) []*Node {
+	var neighbors []*Node
+
+	for _, dir := range dirs {
+		x, y := node.x+dir[0], node.y+dir[1]
+		if x < 0 || x >= len(grid) || y < 0 || y >= len(grid[0]) {
+			continue
+		}
+
+		neighbors = append(neighbors, grid[x][y])
+	}
+
+	return neighbors
+}
+
+func inHeap(pq PriorityQueue, node *Node) bool {
+	for _, n := range pq {
+		if n == node {
+			return true
+		}
+	}
+	return false
+}
