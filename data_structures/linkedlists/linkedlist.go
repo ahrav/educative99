@@ -1,4 +1,4 @@
-package data_structures
+package linkedlists
 
 import (
 	"fmt"
@@ -66,9 +66,7 @@ func reverse(head *EduLinkedListNode) *EduLinkedListNode {
 		return head
 	}
 
-	var prev *EduLinkedListNode
-	curr, next := head, head.next
-
+	var prev, curr, next *EduLinkedListNode = nil, head, nil
 	for curr != nil {
 		next = curr.next
 		curr.next = prev

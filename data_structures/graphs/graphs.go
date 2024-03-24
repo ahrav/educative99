@@ -450,7 +450,7 @@ func (g *WeightedGraph) Dijkstra(src int) []int {
 	dist := make([]int, g.numVertices)
 	sptSet := make([]bool, g.numVertices)
 	for i := range dist {
-		dist[i] = math.MaxInt32
+		dist[i] = math.MaxInt
 	}
 	dist[src] = 0 // Distance from source to source is 0
 
@@ -461,7 +461,7 @@ func (g *WeightedGraph) Dijkstra(src int) []int {
 
 		// Update the distance value of the adjacent vertices of the picked vertex.
 		for _, e := range g.edges {
-			if !sptSet[e.dst] && dist[u] != math.MaxInt32 && dist[u]+e.weight < dist[e.dst] {
+			if !sptSet[e.dst] && dist[u] != math.MaxInt && dist[u]+e.weight < dist[e.dst] {
 				dist[e.dst] = dist[u] + e.weight
 			}
 		}
@@ -472,7 +472,7 @@ func (g *WeightedGraph) Dijkstra(src int) []int {
 
 // minDistance returns the vertex with the minimum distance from the set of vertices not yet processed.
 func minDistance(dist []int, sptSet []bool) int {
-	minV := math.MaxInt32
+	minV := math.MaxInt
 	minIndex := -1
 
 	for i, d := range dist {
