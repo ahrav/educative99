@@ -1,11 +1,11 @@
 package arrays
 
 func ProductOfOtherElements(arr []int) []int {
-	var res []int
 	if len(arr) == 0 {
-		return res
+		return nil
 	}
 
+	res := make([]int, 0, len(arr))
 	total := 1
 	for _, v := range arr {
 		total *= v
@@ -19,12 +19,12 @@ func ProductOfOtherElements(arr []int) []int {
 }
 
 func ProductOfOtherElementsNoDivide(arr []int) []int {
-	var res []int
 	if len(arr) == 0 {
-		return res
+		return nil
 	}
 
-	var prefixProduct []int
+	res := make([]int, 0, len(arr))
+	prefixProduct := make([]int, 0, len(arr))
 	for _, v := range arr {
 		if len(prefixProduct) == 0 {
 			prefixProduct = append(prefixProduct, v)
@@ -33,7 +33,7 @@ func ProductOfOtherElementsNoDivide(arr []int) []int {
 		}
 	}
 
-	var suffixProduct []int
+	suffixProduct := make([]int, 0, len(arr))
 	for i := len(arr) - 1; i >= 0; i-- {
 		if len(suffixProduct) == 0 {
 			suffixProduct = append(suffixProduct, arr[i])
