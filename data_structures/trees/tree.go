@@ -45,6 +45,58 @@ func BFS[T constraints.Integer](root *TreeNode[T]) []T {
 	return result
 }
 
+func isSymmetric(root *TreeNode[int]) bool {
+	if root == nil {
+		return true
+	}
+
+	var queue []*TreeNode[int]
+	if root.Left != nil && root.Right != nil {
+		queue = append(queue, root.Left, root.Right)
+	} else {
+		return false
+	}
+
+	for len(queue) > 1 {
+		left := queue[0]
+		right := queue[1]
+		queue = queue[2:]
+
+		if left == nil && right == nil {
+			continue
+		}
+
+		if left == nil || right == nil {
+			return false
+		}
+
+		if left.Data != right.Data {
+			return false
+		}
+
+		queue = append(queue, left.Left, right.Right, left.Right, right.Left)
+	}
+
+	return true
+}
+
+func isSymmetricRecursive(root *TreeNode[int]) bool {
+	if root == nil {
+		return true
+	}
+	return isMirror(root.Left, root.Right)
+}
+
+func isMirror(left, right *TreeNode[int]) bool {
+	if left == nil && right == nil {
+		return true
+	}
+	if left == nil || right == nil {
+		return false
+	}
+	return left.Data == right.Data && isMirror(left.Left, right.Right) && isMirror(left.Right, right.Left)
+}
+
 func InOrder[T constraints.Integer](root *TreeNode[T]) []T {
 	var result []T
 	if root == nil {
