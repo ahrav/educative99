@@ -1,7 +1,9 @@
 package trees
 
 import (
+	"fmt"
 	"strconv"
+	"strings"
 
 	"golang.org/x/exp/constraints"
 )
@@ -95,6 +97,75 @@ func isMirror(left, right *TreeNode[int]) bool {
 		return false
 	}
 	return left.Data == right.Data && isMirror(left.Left, right.Right) && isMirror(left.Right, right.Left)
+}
+
+func levelOrderTraversal(root *TreeNode[int]) string {
+	if root == nil {
+		return "None"
+	}
+
+	var results strings.Builder
+	var queue []*TreeNode[int]
+	var next []*TreeNode[int]
+	queue = append(queue, root)
+	for len(queue) > 0 {
+		node := queue[0]
+		queue = queue[1:]
+
+		if node.Left != nil {
+			next = append(next, node.Left)
+		}
+		if node.Right != nil {
+			next = append(next, node.Right)
+		}
+
+		if len(queue) == 0 {
+			if len(next) > 0 {
+				results.WriteString(fmt.Sprintf("%s : ", strconv.Itoa(node.Data)))
+				queue = append(queue, next...)
+				next = next[:0]
+				continue
+			} else {
+				results.WriteString(fmt.Sprintf("%s", strconv.Itoa(node.Data)))
+				break
+			}
+
+		}
+		results.WriteString(fmt.Sprintf("%s, ", strconv.Itoa(node.Data)))
+	}
+
+	return results.String()
+}
+
+func levelOrderTraversalNested(root *TreeNode[int]) string {
+	if root == nil {
+		return "None"
+	}
+
+	var results []string
+	var queue []*TreeNode[int]
+	queue = append(queue, root)
+	for len(queue) > 0 {
+		level := len(queue)
+		var levelNodes []string
+
+		for i := 0; i < level; i++ {
+			node := queue[0]
+			queue = queue[1:]
+			levelNodes = append(levelNodes, strconv.Itoa(node.Data))
+
+			if node.Left != nil {
+				queue = append(queue, node.Left)
+			}
+			if node.Right != nil {
+				queue = append(queue, node.Right)
+			}
+		}
+		results = append(results, strings.Join(levelNodes, ", "))
+
+	}
+
+	return strings.Join(results, " : ")
 }
 
 func InOrder[T constraints.Integer](root *TreeNode[T]) []T {

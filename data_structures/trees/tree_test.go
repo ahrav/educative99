@@ -77,3 +77,26 @@ func BenchmarkIsSymmetricRecursive(b *testing.B) {
 		isSymmetricRecursive(root)
 	}
 }
+
+func BenchmarkLevelOrderTraversal(b *testing.B) {
+	// Create a sample binary tree for benchmarking
+	root := &TreeNode[int]{
+		Data: 1,
+		Left: &TreeNode[int]{
+			Data:  2,
+			Left:  &TreeNode[int]{Data: 4},
+			Right: &TreeNode[int]{Data: 5},
+		},
+		Right: &TreeNode[int]{
+			Data:  3,
+			Left:  &TreeNode[int]{Data: 6},
+			Right: &TreeNode[int]{Data: 7},
+		},
+	}
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		levelOrderTraversalNested(root)
+	}
+}
