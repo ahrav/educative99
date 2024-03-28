@@ -168,6 +168,53 @@ func levelOrderTraversalNested(root *TreeNode[int]) string {
 	return strings.Join(results, " : ")
 }
 
+func verticalOrder(root *TreeNode[int]) [][]int {
+	type nodeInfo struct {
+		idx  int
+		node *TreeNode[int]
+	}
+
+	if root == nil {
+		return make([][]int, 0)
+	}
+
+	// Mapping between the column index and all the node values that reside in that column.
+	colIdxValues := make(map[int][]int)
+
+	var queue []nodeInfo
+	var minIdx, maxIdx int
+	queue = append(queue, nodeInfo{idx: 0, node: root})
+	for len(queue) > 0 {
+		node := queue[0]
+		queue = queue[1:]
+
+		if _, ok := colIdxValues[node.idx]; ok {
+			colIdxValues[node.idx] = append(colIdxValues[node.idx], node.node.Data)
+		} else {
+			colIdxValues[node.idx] = []int{node.node.Data}
+		}
+
+		if left := node.node.Left; left != nil {
+			col := node.idx - 1
+			minIdx = min(minIdx, col)
+			queue = append(queue, nodeInfo{idx: col, node: left})
+		}
+
+		if right := node.node.Right; right != nil {
+			col := node.idx + 1
+			maxIdx = max(maxIdx, col)
+			queue = append(queue, nodeInfo{idx: col, node: right})
+		}
+	}
+
+	results := make([][]int, 0, len(colIdxValues))
+	for i := minIdx; i <= maxIdx; i++ {
+		results = append(results, colIdxValues[i])
+	}
+
+	return results
+}
+
 func InOrder[T constraints.Integer](root *TreeNode[T]) []T {
 	var result []T
 	if root == nil {
@@ -283,4 +330,18 @@ func Invert[T constraints.Integer](root *TreeNode[T]) *TreeNode[T] {
 
 	root.Left, root.Right = Invert(root.Right), Invert(root.Left)
 	return root
+}
+
+func min[T constraints.Integer](a, b T) T {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+func max[T constraints.Integer](a, b T) T {
+	if a > b {
+		return a
+	}
+	return b
 }
