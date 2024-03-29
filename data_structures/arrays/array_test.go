@@ -29,3 +29,11 @@ func BenchmarkProductOfOtherElementsNoDivide(b *testing.B) {
 		_ = ProductOfOtherElementsNoDivide(input)
 	}
 }
+
+func TestSmallestWindowSorted(t *testing.T) {
+	input := []int{3, 7, 5, 6, 9}
+	begin, end := SmallestWindowSorted(input)
+	assert.Equal(t, 1, begin)
+	assert.Equal(t, 3, end)
+
+}

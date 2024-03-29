@@ -1,5 +1,7 @@
 package arrays
 
+import "math"
+
 func ProductOfOtherElements(arr []int) []int {
 	if len(arr) == 0 {
 		return nil
@@ -53,4 +55,32 @@ func ProductOfOtherElementsNoDivide(arr []int) []int {
 	}
 
 	return res
+}
+
+func SmallestWindowSorted(arr []int) (int, int) {
+	if len(arr) == 0 {
+		return 0, 0
+	}
+
+	if len(arr) == 1 {
+		return arr[0], arr[0]
+	}
+
+	right, left := 0, len(arr)-1
+	minV, maxV := math.MaxInt, math.MinInt
+	for i, val := range arr {
+		maxV = max(maxV, val)
+		if val < maxV {
+			right = i
+		}
+	}
+
+	for i := len(arr) - 1; i >= 0; i-- {
+		minV = min(minV, arr[i])
+		if arr[i] > minV {
+			left = i
+		}
+	}
+
+	return left, right
 }
