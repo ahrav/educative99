@@ -1,6 +1,10 @@
 package trees
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 func BenchmarkIsSymmetric(b *testing.B) {
 	// Create a larger symmetric tree
@@ -99,4 +103,9 @@ func BenchmarkLevelOrderTraversal(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		levelOrderTraversalNested(root)
 	}
+}
+
+func TestWordLadder(t *testing.T) {
+	got := wordLadder("hit", "cog", []string{"hot", "dot", "lot", "log", "cam"})
+	assert.Equal(t, 0, got)
 }

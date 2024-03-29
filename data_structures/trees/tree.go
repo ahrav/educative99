@@ -345,3 +345,54 @@ func max[T constraints.Integer](a, b T) T {
 	}
 	return b
 }
+
+func wordLadder(src string, dest string, words []string) int {
+	set := make(map[string]struct{}, len(words))
+	for _, w := range words {
+		set[w] = struct{}{}
+	}
+
+	if _, ok := set[dest]; !ok {
+		return 0
+	}
+
+	queue := make([]string, 0, len(words)+2)
+	queue = append(queue, src)
+
+	var cnt int
+	for len(queue) > 0 {
+		cur := queue[0]
+		queue = queue[1:]
+
+		for w := range set {
+			if differByOneChar(cur, w) {
+				delete(set, w)
+				queue = append(queue, w)
+				cnt++
+				if w == dest {
+					return cnt
+				}
+			}
+		}
+	}
+
+	return 0
+}
+
+func differByOneChar(a, b string) bool {
+	if len(a) != len(b) {
+		return false
+	}
+
+	var cnt int
+	for i := range a {
+		if a[i] != b[i] {
+			cnt++
+			if cnt > 1 {
+				return false
+			}
+		}
+	}
+
+	return true
+}
