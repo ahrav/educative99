@@ -84,3 +84,60 @@ func SmallestWindowSorted(arr []int) (int, int) {
 
 	return left, right
 }
+
+func MaxSubarraySum(arr []int) int {
+	if len(arr) == 0 {
+		return 0
+	}
+
+	if len(arr) == 1 {
+		return arr[1]
+	}
+
+	currSum, maxSum := 0, math.MinInt
+	for _, v := range arr {
+		currSum = max(v, v+currSum)
+		maxSum = max(maxSum, currSum)
+	}
+
+	return maxSum
+}
+
+func MaxSubarrayCircularSum(arr []int) int {
+	if len(arr) == 0 {
+		return 0
+	}
+
+	if len(arr) == 1 {
+		return arr[1]
+	}
+
+	// This could be optimized further by returning the sum from either MaxSubarraySum or MinSubarraySum.
+	var sum int
+	for _, v := range arr {
+		sum += v
+	}
+
+	minV := MinSubarraySum(arr)
+	circularSum := sum - minV
+	return max(MaxSubarraySum(arr), circularSum)
+
+}
+
+func MinSubarraySum(arr []int) int {
+	if len(arr) == 0 {
+		return 0
+	}
+
+	if len(arr) == 1 {
+		return arr[1]
+	}
+
+	currSum, minSum := 0, math.MaxInt
+	for _, v := range arr {
+		currSum = min(v, v+currSum)
+		minSum = min(minSum, currSum)
+	}
+
+	return minSum
+}
