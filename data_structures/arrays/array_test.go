@@ -49,3 +49,10 @@ func TestMaxSubarrayCircularSum(t *testing.T) {
 	got := MaxSubarrayCircularSum(input)
 	assert.Equal(t, 15, got)
 }
+
+func TestSmallerCounts(t *testing.T) {
+	input := []int{3, 4, 9, 6, 1}
+	want := []int{1, 1, 2, 1, 0}
+	got := SmallerCounts(input)
+	assert.Equal(t, want, got)
+}

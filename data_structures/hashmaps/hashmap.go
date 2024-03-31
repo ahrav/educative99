@@ -39,7 +39,6 @@ func nextGreaterElement(nums1 []int, nums2 []int) []int {
 	}
 
 	ans := make([]int, len(nums1))
-
 	for i, num := range nums1 {
 		if val, ok := m[num]; ok {
 			ans[i] = val
@@ -49,4 +48,31 @@ func nextGreaterElement(nums1 []int, nums2 []int) []int {
 	}
 
 	return ans
+}
+
+func isIsomorphic(string1 string, string2 string) bool {
+	if len(string1) != len(string2) {
+		return false
+	}
+
+	m := make(map[rune]rune)
+	for i, c := range string1 {
+		v, ok := m[c]
+		if !ok {
+			x := rune(string2[i])
+			if val, ok := m[x]; ok {
+				if val == x {
+					return false
+				}
+			}
+			m[c] = x
+			continue
+		}
+
+		if v != rune(string2[i]) {
+			return false
+		}
+	}
+
+	return true
 }

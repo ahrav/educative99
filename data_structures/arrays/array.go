@@ -1,6 +1,9 @@
 package arrays
 
-import "math"
+import (
+	"math"
+	"sort"
+)
 
 func ProductOfOtherElements(arr []int) []int {
 	if len(arr) == 0 {
@@ -140,4 +143,33 @@ func MinSubarraySum(arr []int) int {
 	}
 
 	return minSum
+}
+
+type SortedList struct {
+	data []int
+}
+
+func (s *SortedList) Add(value int) int {
+	index := sort.Search(len(s.data), func(i int) bool {
+		return s.data[i] >= value
+	})
+	s.data = append(s.data, 0)
+	copy(s.data[index+1:], s.data[index:])
+	s.data[index] = value
+	return index
+}
+
+func (s *SortedList) Get() []int {
+	return s.data
+}
+
+func SmallerCounts(arr []int) []int {
+	result := make([]int, 0, len(arr))
+
+	var sortedLst SortedList
+	for i := len(arr) - 1; i >= 0; i-- {
+		result = append([]int{sortedLst.Add(arr[i])}, result...)
+	}
+
+	return result
 }
