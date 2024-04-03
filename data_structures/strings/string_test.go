@@ -12,3 +12,21 @@ func TestAnagramIndices(t *testing.T) {
 	got := AnagramIndices(w, s)
 	assert.Equal(t, []int{0, 3, 4}, got)
 }
+
+func TestIsPalindromePairs(t *testing.T) {
+	input := []string{"code", "edoc", "da", "d"}
+	got := IsPalindromePairs(input)
+	assert.Equal(t, [][]int{{0, 1}, {1, 0}, {2, 3}}, got)
+}
+
+func TestHashUniqueUnicodeSort(t *testing.T) {
+	input := "abcd"
+	got := HashUniqueUnicodeSort(input)
+	assert.Equal(t, true, got)
+}
+
+func TestHashUniqueASCIIChars(t *testing.T) {
+	input := "abcd"
+	got := HashUniqueASCIIChars(input)
+	assert.Equal(t, true, got)
+}
