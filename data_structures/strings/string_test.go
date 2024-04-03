@@ -25,6 +25,12 @@ func TestHashUniqueUnicodeSort(t *testing.T) {
 	assert.Equal(t, true, got)
 }
 
+func TestHasUniqueUnicodeHash(t *testing.T) {
+	input := "abcd"
+	got := HasUniqueUnicodeHash(input)
+	assert.Equal(t, true, got)
+}
+
 func TestHashUniqueASCIIChars(t *testing.T) {
 	input := "abcd"
 	got := HashUniqueASCIIChars(input)

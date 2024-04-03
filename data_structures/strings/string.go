@@ -136,3 +136,16 @@ func HashUniqueUnicodeSort(s string) bool {
 
 	return true
 }
+
+func HasUniqueUnicodeHash(s string) bool {
+	m := make(map[int32]struct{}, len(s))
+	for _, c := range s {
+		if _, ok := m[c]; !ok {
+			m[c] = struct{}{}
+		} else {
+			return false
+		}
+	}
+
+	return true
+}
