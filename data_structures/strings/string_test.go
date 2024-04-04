@@ -36,3 +36,10 @@ func TestHashUniqueASCIIChars(t *testing.T) {
 	got := HashUniqueASCIIChars(input)
 	assert.Equal(t, true, got)
 }
+
+func TestCheckPermutation(t *testing.T) {
+	a := "boo"
+	b := "bobo"
+	got := CheckPermutation(a, b)
+	assert.Equal(t, true, got)
+}

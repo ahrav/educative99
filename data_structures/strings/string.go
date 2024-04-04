@@ -149,3 +149,37 @@ func HasUniqueUnicodeHash(s string) bool {
 
 	return true
 }
+
+func CheckPermutation(a, b string) bool {
+	if len(a) == 0 && len(b) == 0 {
+		return true
+	}
+
+	if len(a) == 0 && len(b) != 0 || len(b) == 0 && len(a) != 0 {
+		return false
+	}
+
+	var longer, shorter string
+	if len(a) < len(b) {
+		longer = b
+		shorter = a
+	} else {
+		longer = a
+		shorter = b
+	}
+
+	m := make(map[int32]int)
+	for _, c := range longer {
+		m[c]++
+	}
+
+	for _, c := range shorter {
+		if _, ok := m[c]; !ok {
+			return false
+		} else {
+			m[c]--
+		}
+	}
+
+	return true
+}
