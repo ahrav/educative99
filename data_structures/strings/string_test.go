@@ -50,3 +50,9 @@ func TestCheckPermutationASCII(t *testing.T) {
 	got := CheckPermutationASCII(a, b)
 	assert.Equal(t, true, got)
 }
+
+func TestURLify(t *testing.T) {
+	input := "Mr John Smith"
+	got := URLify(input)
+	assert.Equal(t, "Mr%20John%20Smith", got)
+}

@@ -1,6 +1,9 @@
 package strings
 
-import "sort"
+import (
+	"sort"
+	"strings"
+)
 
 func AnagramIndices(w, s string) []int {
 	if len(w) > len(s) {
@@ -189,4 +192,17 @@ func CheckPermutationASCII(a, b string) bool {
 	}
 
 	return true
+}
+
+func URLify(s string) string {
+	var sb strings.Builder
+	for _, c := range s {
+		if c == ' ' {
+			sb.WriteString("%20")
+			continue
+		}
+		sb.WriteRune(c)
+	}
+
+	return sb.String()
 }
