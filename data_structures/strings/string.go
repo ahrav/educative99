@@ -150,35 +150,42 @@ func HasUniqueUnicodeHash(s string) bool {
 	return true
 }
 
-func CheckPermutation(a, b string) bool {
-	if len(a) == 0 && len(b) == 0 {
-		return true
-	}
-
-	if len(a) == 0 && len(b) != 0 || len(b) == 0 && len(a) != 0 {
+func CheckPermutationUnicode(a, b string) bool {
+	if len(a) != len(b) {
 		return false
 	}
 
-	var longer, shorter string
-	if len(a) < len(b) {
-		longer = b
-		shorter = a
-	} else {
-		longer = a
-		shorter = b
-	}
-
 	m := make(map[int32]int)
-	for _, c := range longer {
+	for _, c := range a {
 		m[c]++
 	}
 
-	for _, c := range shorter {
+	for _, c := range b {
 		if _, ok := m[c]; !ok {
 			return false
 		} else {
 			m[c]--
 		}
+	}
+
+	return true
+}
+
+func CheckPermutationASCII(a, b string) bool {
+	if len(a) != len(b) {
+		return false
+	}
+
+	var count [128]int
+	for _, c := range a {
+		count[c]++
+	}
+
+	for _, c := range b {
+		if count[c] == 0 {
+			return false
+		}
+		count[c]--
 	}
 
 	return true

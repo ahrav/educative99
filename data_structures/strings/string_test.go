@@ -37,9 +37,16 @@ func TestHashUniqueASCIIChars(t *testing.T) {
 	assert.Equal(t, true, got)
 }
 
-func TestCheckPermutation(t *testing.T) {
-	a := "boo"
+func TestCheckPermutationUnicode(t *testing.T) {
+	a := "oobb"
 	b := "bobo"
-	got := CheckPermutation(a, b)
+	got := CheckPermutationUnicode(a, b)
+	assert.Equal(t, true, got)
+}
+
+func TestCheckPermutationASCII(t *testing.T) {
+	a := "oobb"
+	b := "bobo"
+	got := CheckPermutationASCII(a, b)
 	assert.Equal(t, true, got)
 }
