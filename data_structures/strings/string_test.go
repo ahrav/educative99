@@ -62,3 +62,9 @@ func TestPalindromePermutation(t *testing.T) {
 	got := PalindromePermutation(input)
 	assert.Equal(t, true, got)
 }
+
+func TestPalindromePermutationVector(t *testing.T) {
+	input := "aaabb"
+	got := PalindromePermutationVector(input)
+	assert.Equal(t, true, got)
+}

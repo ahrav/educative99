@@ -236,3 +236,15 @@ func PalindromePermutation(s string) bool {
 
 	return true
 }
+
+func PalindromePermutationVector(s string) bool {
+	var bitVector uint8
+	for _, c := range s {
+		if c >= 'a' && c <= 'z' {
+			idx := c - 'a'
+			bitVector ^= 1 << idx
+		}
+	}
+
+	return (bitVector & (bitVector - 1)) == 0
+}
