@@ -38,6 +38,18 @@ func (l *EduLinkedList) InsertNodeAtHead(node *EduLinkedListNode) {
 	}
 }
 
+func (l *EduLinkedList) InsertNode(node *EduLinkedListNode) {
+	if l.head == nil {
+		l.head = node
+	}
+
+	curr := l.head
+	for curr.next != nil {
+		curr = curr.next
+	}
+	curr.next = node
+}
+
 // CreateLinkedList method will create the linked list using the given integer array
 // with the help of InsertAthead method.
 func (l *EduLinkedList) CreateLinkedList(lst []int) {
@@ -75,6 +87,27 @@ func reverse(head *EduLinkedListNode) *EduLinkedListNode {
 	}
 
 	return prev
+}
+
+func AddLinkedLists(lst1, lst2 *EduLinkedListNode) *EduLinkedListNode {
+	if lst1 == nil && lst2 == nil {
+		return nil
+	}
+
+	ll := new(EduLinkedList)
+
+	curr1, curr2 := lst1, lst2
+	var carry uint8
+	for curr1 != nil {
+		val := curr1.data + curr2.data + int(carry)
+		if val > 10 {
+			carry = 1
+		}
+		node := &EduLinkedListNode{data: val % 10}
+		ll.InsertNode(node)
+	}
+
+	return ll.head
 }
 
 func reverseEvenLengthGroups(head *EduLinkedListNode) {
