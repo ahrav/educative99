@@ -56,3 +56,9 @@ func TestURLify(t *testing.T) {
 	got := URLify(input)
 	assert.Equal(t, "Mr%20John%20Smith", got)
 }
+
+func TestPalindromePermutation(t *testing.T) {
+	input := "aaabb"
+	got := PalindromePermutation(input)
+	assert.Equal(t, true, got)
+}

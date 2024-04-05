@@ -102,9 +102,14 @@ func AddLinkedLists(lst1, lst2 *EduLinkedListNode) *EduLinkedListNode {
 		val := curr1.data + curr2.data + int(carry)
 		if val > 10 {
 			carry = 1
+		} else {
+			carry = 0
 		}
 		node := &EduLinkedListNode{data: val % 10}
 		ll.InsertNode(node)
+	}
+	if carry == 1 {
+		ll.InsertNode(&EduLinkedListNode{data: 1})
 	}
 
 	return ll.head

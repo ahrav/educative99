@@ -206,3 +206,33 @@ func URLify(s string) string {
 
 	return sb.String()
 }
+
+func PalindromePermutation(s string) bool {
+	if len(s) < 2 {
+		return true
+	}
+
+	m := make(map[int32]int)
+	for _, c := range s {
+		if c == ' ' {
+			continue
+		}
+		m[c]++
+	}
+
+	if len(m) == 1 {
+		return true
+	}
+
+	var oddCnt int
+	for _, v := range m {
+		if v%2 != 0 {
+			oddCnt++
+			if oddCnt > 1 {
+				return false
+			}
+		}
+	}
+
+	return true
+}
