@@ -143,6 +143,45 @@ func AlternateValues(node *EduLinkedListNode) {
 	return
 }
 
+func IntersectingNode(lst1, lst2 *EduLinkedListNode) *EduLinkedListNode {
+	if lst1 == nil || lst2 == nil {
+		return nil
+	}
+
+	lst1Len, lst2Len := length(lst1), length(lst2)
+	curr1, curr2 := lst1, lst2
+
+	if lst1Len > lst2Len {
+		inc := lst1Len - lst2Len
+		for i := 0; i < inc; i++ {
+			curr1 = curr1.next
+		}
+	} else {
+		inc := lst2Len - lst1Len
+		for i := 0; i < inc; i++ {
+			curr2 = curr2.next
+		}
+	}
+
+	for curr1.data != curr2.data {
+		curr1 = curr1.next
+		curr2 = curr2.next
+	}
+
+	return curr1
+}
+
+func length(n *EduLinkedListNode) int {
+	var length int
+	curr := n
+	for curr != nil {
+		length++
+		curr = curr.next
+	}
+
+	return length
+}
+
 func reverseEvenLengthGroups(head *EduLinkedListNode) {
 	// Write your code here
 }

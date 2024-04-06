@@ -60,3 +60,14 @@ func TestAlternateValues(t *testing.T) {
 		i++
 	}
 }
+
+func TestIntersectingNode(t *testing.T) {
+	list1 := &EduLinkedList{}
+	list1.CreateLinkedList([]int{3, 7, 8, 10})
+
+	list2 := &EduLinkedList{}
+	list2.CreateLinkedList([]int{99, 1, 8, 10})
+
+	got := IntersectingNode(list1.head, list2.head)
+	assert.Equal(t, 8, got.data)
+}
