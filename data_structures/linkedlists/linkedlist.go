@@ -115,6 +115,34 @@ func AddLinkedLists(lst1, lst2 *EduLinkedListNode) *EduLinkedListNode {
 	return ll.head
 }
 
+func AlternateValues(node *EduLinkedListNode) {
+	if node == nil || node.next == nil {
+		return
+	}
+
+	prev := node
+	curr := node.next
+
+	for curr != nil {
+		if prev.data > curr.data {
+			prev.data, curr.data = curr.data, prev.data
+		}
+
+		if curr.next == nil {
+			break
+		}
+
+		if curr.data < curr.next.data {
+			curr.data, curr.next.data = curr.next.data, curr.data
+		}
+
+		prev = curr.next
+		curr = curr.next.next
+	}
+
+	return
+}
+
 func reverseEvenLengthGroups(head *EduLinkedListNode) {
 	// Write your code here
 }

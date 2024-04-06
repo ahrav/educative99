@@ -46,3 +46,17 @@ func getLinkedListData(head *EduLinkedListNode) []int {
 	}
 	return data
 }
+
+func TestAlternateValues(t *testing.T) {
+	list := &EduLinkedList{}
+	list.CreateLinkedList([]int{1, 2, 3, 4, 5})
+	AlternateValues(list.head)
+	expectedData := []int{1, 3, 2, 5, 4}
+	i := 0
+	tmp := list.head
+	for tmp != nil {
+		assert.Equal(t, expectedData[i], tmp.data)
+		tmp = tmp.next
+		i++
+	}
+}
