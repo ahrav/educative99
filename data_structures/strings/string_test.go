@@ -74,3 +74,9 @@ func TestOneAway(t *testing.T) {
 	got := OneAway(input, "aple")
 	assert.Equal(t, true, got)
 }
+
+func TestStringCompressions(t *testing.T) {
+	input := "aabcccccaaa"
+	got := StringCompressions(input)
+	assert.Equal(t, "a2b1c5a3", got)
+}

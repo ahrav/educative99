@@ -2,6 +2,7 @@ package strings
 
 import (
 	"sort"
+	"strconv"
 	"strings"
 )
 
@@ -282,4 +283,44 @@ func OneAway(src, target string) bool {
 	}
 
 	return true
+}
+
+func StringCompressions(s string) string {
+	compLen := countCompression(s)
+	if compLen == len(s) {
+		return s
+	}
+
+	var sb strings.Builder
+	sb.Grow(compLen)
+	cnt := 1
+	char := s[0]
+
+	sb.WriteByte(char)
+	for i := 1; i < len(s); i++ {
+		if s[i] != char {
+			char = s[i]
+			sb.WriteString(strconv.Itoa(cnt))
+			sb.WriteByte(char)
+			cnt = 1
+			continue
+		}
+		cnt++
+	}
+	sb.WriteString(strconv.Itoa(cnt))
+
+	return sb.String()
+}
+
+func countCompression(s string) int {
+	var compLen, count int
+	for i := 0; i < len(s); i++ {
+		count++
+		if i+1 >= len(s) || s[i] != s[i+1] {
+			compLen += 1 + len(strconv.Itoa(compLen))
+			count = 0
+		}
+	}
+
+	return compLen
 }
