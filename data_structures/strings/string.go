@@ -248,3 +248,37 @@ func PalindromePermutationVector(s string) bool {
 
 	return (bitVector & (bitVector - 1)) == 0
 }
+
+func OneAway(src, target string) bool {
+	srcLen, tgtLen := len(src), len(target)
+	if srcLen-tgtLen > 1 {
+		return false
+	}
+
+	var longer, shorter string
+	if srcLen > tgtLen {
+		longer = src
+		shorter = target
+	} else {
+		longer = target
+		shorter = src
+	}
+
+	var idx, changes int
+	for i := range longer {
+		if longer[i] == shorter[idx] {
+			idx++
+			continue
+		}
+		changes++
+		if changes > 1 {
+			return false
+		}
+
+		if srcLen == tgtLen {
+			idx++
+		}
+	}
+
+	return true
+}

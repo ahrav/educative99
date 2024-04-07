@@ -68,3 +68,9 @@ func TestPalindromePermutationVector(t *testing.T) {
 	got := PalindromePermutationVector(input)
 	assert.Equal(t, true, got)
 }
+
+func TestOneAway(t *testing.T) {
+	input := "apple"
+	got := OneAway(input, "aple")
+	assert.Equal(t, true, got)
+}
