@@ -56,3 +56,11 @@ func TestSmallerCounts(t *testing.T) {
 	got := SmallerCounts(input)
 	assert.Equal(t, want, got)
 }
+
+func TestMinRemovals(t *testing.T) {
+	input := []int{6, 9, 6, 7, 2, 7, 2}
+	k := 2
+	th := 13
+	got := minRemovals(input, k, th)
+	assert.Equal(t, 2, got)
+}

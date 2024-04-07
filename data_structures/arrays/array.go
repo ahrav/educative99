@@ -173,3 +173,39 @@ func SmallerCounts(arr []int) []int {
 
 	return result
 }
+
+func minRemovals(arr []int, k int, threshold int) int {
+	sort.Ints(arr) // Sort the array in ascending order
+	n := len(arr)
+	windowSum := sum(arr[:k]) // Sum of the first k elements
+	removals := 0
+
+	if windowSum > threshold {
+		return 1 // No valid subset of k elements exists
+	}
+
+	var include bool
+	for i := k; i < n; i++ {
+		if !include {
+			windowSum += arr[i] - arr[i-k] // Slide the window
+		} else {
+			windowSum += arr[i]
+			include = false
+		}
+		if windowSum > threshold {
+			removals++
+			windowSum -= arr[i] // Remove the current element
+			include = true
+		}
+	}
+
+	return removals
+}
+
+func sum(arr []int) int {
+	result := 0
+	for _, num := range arr {
+		result += num
+	}
+	return result
+}
