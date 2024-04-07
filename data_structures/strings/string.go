@@ -264,16 +264,17 @@ func OneAway(src, target string) bool {
 		shorter = src
 	}
 
-	var idx, changes int
+	var idx int
+	var hasDiff bool
 	for i := range longer {
 		if longer[i] == shorter[idx] {
 			idx++
 			continue
 		}
-		changes++
-		if changes > 1 {
+		if hasDiff {
 			return false
 		}
+		hasDiff = true
 
 		if srcLen == tgtLen {
 			idx++
