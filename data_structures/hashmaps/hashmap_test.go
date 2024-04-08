@@ -13,3 +13,9 @@ func TestNextGreaterElement(t *testing.T) {
 	got := nextGreaterElement(input1, input2)
 	assert.Equal(t, want, got)
 }
+
+func TestFractionToDecimal(t *testing.T) {
+	num, denom := 8, 666
+	got := fractionToDecimal(num, denom)
+	assert.Equal(t, "0.(012)", got)
+}

@@ -1,5 +1,9 @@
 package hashmaps
 
+import (
+	"strconv"
+)
+
 type RequestLogger struct {
 	m     map[string]int
 	limit int
@@ -75,4 +79,58 @@ func isIsomorphic(string1 string, string2 string) bool {
 	}
 
 	return true
+}
+
+func abs(n int) int {
+	if n < 0 {
+		return -n
+	}
+	return n
+}
+
+func fractionToDecimal(num, denom int) string {
+	if num == 0 {
+		return "0"
+	}
+
+	res, rMap := "", make(map[int]int)
+
+	numPos, denomPos := 0, 0
+	if num < 0 {
+		numPos++
+	}
+	if denom < 0 {
+		denomPos++
+	}
+
+	if numPos^denomPos == 1 {
+		res += "-"
+
+		num = abs(num)
+		denom = abs(denom)
+	}
+
+	quotient := num / denom
+	remainder := (num % denom) * 10
+	res += strconv.Itoa(quotient)
+
+	if remainder == 0 {
+		return res
+	}
+
+	res += "."
+	for remainder != 0 {
+		if begin, ok := rMap[remainder]; ok {
+			left := res[0:begin]
+			right := res[begin:len(res)]
+			return left + "(" + right + ")"
+		}
+
+		rMap[remainder] = len(res)
+		quotient = remainder / denom
+		res += strconv.Itoa(quotient)
+		remainder = (remainder % denom) * 10
+	}
+
+	return res
 }
