@@ -1,5 +1,11 @@
 package stacks
 
+import (
+	"fmt"
+
+	"golang.org/x/exp/constraints"
+)
+
 type Queue[T any] struct {
 	d1 Stack[T]
 	d2 Stack[T]
@@ -105,4 +111,51 @@ func minRemoveParens(s string) string {
 	}
 
 	return string(result)
+}
+
+type MaxStack[T constraints.Integer] struct {
+	data Stack[T]
+	max  Stack[T]
+}
+
+func (s *MaxStack[T]) Push(element T) {
+	top, ok := s.max.Peek()
+	if !ok {
+		return
+	}
+
+	if element > top {
+		s.max.Push(element)
+	} else {
+		s.max.Push(top)
+	}
+
+	s.data.Push(element)
+}
+
+func (s *MaxStack[T]) Pop() (T, error) {
+	if s.data.IsEmpty() {
+		var zero T
+		return zero, fmt.Errorf("empty stack")
+	}
+
+	el, ok := s.data.Pop()
+	if !ok {
+		return el, fmt.Errorf("error")
+	}
+	if x, ok := s.max.Pop(); !ok {
+		return x, fmt.Errorf("bad")
+	}
+
+	return el, nil
+}
+
+func (s *MaxStack[T]) Max() (T, error) {
+	if s.max.IsEmpty() {
+		var zero T
+		return zero, fmt.Errorf("empty")
+	}
+
+	m, _ := s.max.Peek()
+	return m, nil
 }
