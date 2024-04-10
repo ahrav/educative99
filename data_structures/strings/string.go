@@ -349,3 +349,21 @@ func RotateMatrix(matrix [][]int) bool {
 
 	return true
 }
+
+func ZeroMatrix(matrix [][]int) {
+	var rowIdx, colIdx int
+exit:
+	for i := 0; i < len(matrix); i++ {
+		for j := 0; j < len(matrix[0]); j++ {
+			if matrix[i][j] == 0 {
+				rowIdx, colIdx = i, j
+				break exit
+			}
+		}
+	}
+
+	for i := 0; i < len(matrix); i++ {
+		matrix[rowIdx][i] = 0
+		matrix[i][colIdx] = 0
+	}
+}

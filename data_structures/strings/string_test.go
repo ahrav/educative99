@@ -80,3 +80,9 @@ func TestStringCompressions(t *testing.T) {
 	got := StringCompressions(input)
 	assert.Equal(t, "a2b1c5a3", got)
 }
+
+func TestZeroMatrix(t *testing.T) {
+	input := [][]int{{1, 2, 3}, {2, 0, 6}, {3, 6, 9}}
+	ZeroMatrix(input)
+	assert.Equal(t, [][]int{{1, 0, 3}, {0, 0, 0}, {3, 0, 9}}, input)
+}
