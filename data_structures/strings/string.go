@@ -325,6 +325,7 @@ func countCompression(s string) int {
 	return compLen
 }
 
+// TODO: add test
 func RotateMatrix(matrix [][]int) bool {
 	if len(matrix) == 0 || len(matrix) != len(matrix[0]) {
 		return false
