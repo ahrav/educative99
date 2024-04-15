@@ -59,6 +59,38 @@ func (s *Stack[T]) IsEmpty() bool {
 	return len(s.data) == 0
 }
 
+func isBalancedParens(s string) bool {
+	stack := new(Stack[rune])
+	for _, c := range s {
+		if c == '(' || c == '{' || c == '[' {
+			stack.Push(c)
+			continue
+		}
+		val, ok := stack.Pop()
+		if !ok {
+			return false
+		}
+		switch val {
+		case '(':
+			if c != ')' {
+				return false
+			}
+		case '[':
+			if c != ']' {
+				return false
+			}
+		case '{':
+			if c != '}' {
+				return false
+			}
+		default:
+			return false
+		}
+	}
+
+	return stack.IsEmpty()
+}
+
 func removeDuplicates(s string) string {
 	stack := new(Stack[rune])
 	for _, char := range s {
