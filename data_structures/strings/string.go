@@ -368,3 +368,12 @@ exit:
 		matrix[i][colIdx] = 0
 	}
 }
+
+func IsRotationSubstring(a, b string) bool {
+	if len(a) != len(b) {
+		return false
+	}
+
+	combined := a + a
+	return strings.Contains(combined, b)
+}

@@ -86,3 +86,9 @@ func TestZeroMatrix(t *testing.T) {
 	ZeroMatrix(input)
 	assert.Equal(t, [][]int{{1, 0, 3}, {0, 0, 0}, {3, 0, 9}}, input)
 }
+
+func TestIsSubstring(t *testing.T) {
+	a, b := "waterbottle", "erbottlewat"
+	got := IsRotationSubstring(a, b)
+	assert.True(t, got)
+}
