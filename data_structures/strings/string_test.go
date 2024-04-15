@@ -92,3 +92,11 @@ func TestIsSubstring(t *testing.T) {
 	got := IsRotationSubstring(a, b)
 	assert.True(t, got)
 }
+
+func BenchmarkIsRotationSubstring(b *testing.B) {
+	a, c := "waterbottle", "erbottlewat"
+
+	for i := 0; i < b.N; i++ {
+		_ = IsRotationSubstring(a, c)
+	}
+}
