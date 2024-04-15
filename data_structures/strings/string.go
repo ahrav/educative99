@@ -374,6 +374,5 @@ func IsRotationSubstring(a, b string) bool {
 		return false
 	}
 
-	combined := a + a
-	return strings.Contains(combined, b)
+	return strings.Contains(a+a, b)
 }
