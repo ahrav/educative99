@@ -64,3 +64,27 @@ func TestMinRemovals(t *testing.T) {
 	got := minRemovals(input, k, th)
 	assert.Equal(t, 2, got)
 }
+
+func TestRemoveElement(t *testing.T) {
+	input := []int{3, 2, 2, 3}
+	val := 3
+	want := 2
+	got := removeElement(input, val)
+	assert.Equal(t, want, got)
+}
+
+func TestRemoveDuplicates(t *testing.T) {
+	input := []int{1, 1, 2}
+	want := 2
+	got := removeDuplicates(input)
+	assert.Equal(t, want, got)
+	assert.Equal(t, []int{1, 2}, input)
+}
+
+func TestRemoveDuplicatesTwo(t *testing.T) {
+	input := []int{1, 1, 1, 2, 2, 2, 3}
+	want := 5
+	got := removeDuplicatesTwo(input)
+	assert.Equal(t, want, got)
+	assert.Equal(t, []int{1, 1, 2, 2, 3}, input[:got])
+}

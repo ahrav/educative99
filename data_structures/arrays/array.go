@@ -209,3 +209,55 @@ func sum(arr []int) int {
 	}
 	return result
 }
+
+func removeElement(nums []int, val int) int {
+	i := 0
+	for _, v := range nums {
+		if v != val {
+			nums[i] = v
+			i++
+		}
+	}
+	nums = nums[:i]
+	return i
+}
+
+func removeDuplicates(nums []int) int {
+	if len(nums) == 0 || len(nums) == 1 {
+		return len(nums)
+	}
+
+	i := 1
+	for idx := 1; idx < len(nums); idx++ {
+		if nums[idx] != nums[idx-1] {
+			nums[i] = nums[idx]
+			i++
+		}
+	}
+
+	nums = nums[:i]
+	return i
+}
+
+func removeDuplicatesTwo(nums []int) int {
+	if len(nums) == 0 || len(nums) == 1 || len(nums) == 2 {
+		return len(nums)
+	}
+
+	i, prev, cnt := 1, nums[0], 1
+	for idx := 1; idx < len(nums); idx++ {
+		if nums[idx] != prev {
+			nums[i] = nums[idx]
+			cnt = 1
+			i++
+			prev = nums[idx]
+		} else if cnt < 2 {
+			nums[i] = nums[idx]
+			i++
+			cnt++
+		}
+	}
+
+	nums = nums[:i]
+	return i
+}
