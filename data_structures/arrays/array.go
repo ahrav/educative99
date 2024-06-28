@@ -261,3 +261,40 @@ func removeDuplicatesTwo(nums []int) int {
 	nums = nums[:i]
 	return i
 }
+
+func majorityElementNaive(nums []int) int {
+	freq := make(map[int]int)
+	majority := math.Ceil(float64(len(nums)) / 2)
+
+	for _, v := range nums {
+		if val, ok := freq[v]; ok {
+			newCnt := val + 1
+			if float64(newCnt) == majority {
+				return v
+			}
+			freq[v] = newCnt
+			continue
+		}
+
+		freq[v]++
+	}
+
+	return 0
+}
+
+func majorityElementBoyerMoore(nums []int) int {
+	candidate, count := 0, 0
+
+	for _, num := range nums {
+		if count == 0 {
+			candidate = num
+		}
+		if candidate == num {
+			count++
+		} else {
+			count--
+		}
+	}
+
+	return candidate
+}

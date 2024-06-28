@@ -88,3 +88,12 @@ func TestRemoveDuplicatesTwo(t *testing.T) {
 	assert.Equal(t, want, got)
 	assert.Equal(t, []int{1, 1, 2, 2, 3}, input[:got])
 }
+
+func TestMajorityElement(t *testing.T) {
+	input := []int{3, 2, 3}
+	want := 3
+	got := majorityElementNaive(input)
+	got2 := majorityElementBoyerMoore(input)
+	assert.Equal(t, want, got)
+	assert.Equal(t, want, got2)
+}
