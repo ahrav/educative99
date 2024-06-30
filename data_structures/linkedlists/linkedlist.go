@@ -290,9 +290,9 @@ func rotateLeftInPlace(d int32, arr []int32) []int32 {
 	}
 
 	d = d % int32(len(arr))
+	reverseArrayInPlace(arr)
 	reverseArrayInPlace(arr[:d])
 	reverseArrayInPlace(arr[d:])
-	reverseArrayInPlace(arr)
 
 	return arr
 }

@@ -97,3 +97,11 @@ func TestMajorityElement(t *testing.T) {
 	assert.Equal(t, want, got)
 	assert.Equal(t, want, got2)
 }
+
+func TestRotateLeftInplace(t *testing.T) {
+	input := []int{1, 2, 3, 4, 5, 6, 7}
+	k := 3
+	want := []int{5, 6, 7, 1, 2, 3, 4}
+	rotateLeftInPlace(input, k)
+	assert.Equal(t, want, input)
+}

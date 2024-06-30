@@ -298,3 +298,27 @@ func majorityElementBoyerMoore(nums []int) int {
 
 	return candidate
 }
+
+func rotateLeftInPlace(arr []int, d int) {
+	d = d % len(arr)
+	if len(arr) == 0 || d == 0 {
+		return
+	}
+
+	reverseArrayInPlace(arr)
+	reverseArrayInPlace(arr[:d])
+	reverseArrayInPlace(arr[d:])
+
+	return
+}
+
+func reverseArrayInPlace(arr []int) {
+	if len(arr) == 0 {
+		return
+	}
+
+	l := len(arr)
+	for i := 0; i < l/2; i++ {
+		arr[i], arr[l-1-i] = arr[l-1-i], arr[i]
+	}
+}
